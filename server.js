@@ -1,3 +1,9 @@
+
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => { res.send("Express on Vercel"); });
+
 const httpServer = require('http').createServer()
 const socketIO = require('socket.io')(httpServer)
 
@@ -21,6 +27,8 @@ socketIO.on('connection', function (client) {
     console.log(err);
   })
 })
+
+
 
 var port = process.env.PORT || 3000;
 httpServer.listen(port, function (err) {
