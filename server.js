@@ -30,8 +30,9 @@ socketIO.on('connection', function (client) {
 
 
 
-var port = process.env.PORT || 3000;
-httpServer.listen(port, function (err) {
-  if (err) console.log(err);
-  console.log('Listening on port', port);
-});
+var port = process.env.PORT || 5000;
+// httpServer.listen(port, function (err) {
+//   if (err) console.log(err);
+//   console.log('Listening on port', port);
+// });
+app.listen(port, () => { console.log(`Server is running on port ${port}`)});
