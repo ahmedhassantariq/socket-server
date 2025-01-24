@@ -1,29 +1,23 @@
-
-const express = require("express");
-const app = express();
-
-app.get("/", (req, res) => { res.send("Express on Vercel"); });
-
 const httpServer = require('http').createServer()
-const socketIO = require('socket.io')(httpServer)
+const io = require('socket.io')(httpServer)
 
-socketIO.on('connection', function (client) {
-  console.log('Connected...', client.id);
+// console.log(socketIO.engine.clientCount());
 
-//listens for new messages coming in
-  client.on('message', function name(data) {
-    console.log(data);
-    socketIO.emit('message', data);
+io.on('connection', socket => {
+
+  console.log('Connected...', socket.id);
+  console.log(io.of("/").sockets.size);
+  socket.on("message", (msg) => {
+    io.to(msg['receiverID']).emit("message", msg);
+  });
+
+socket.on('disconnect', function () {
+    console.log(io.of("/").sockets.size);
+    console.log('Disconnected...', socket.id);
   })
 
-//listens when a user is disconnected from the server
-  client.on('disconnect', function () {
-    console.log('Disconnected...', client.id);
-  })
-
-//listens when there's an error detected and logs the error on the console
-  client.on('error', function (err) {
-    console.log('Error detected', client.id);
+  socket.on('error', function (err) {
+    console.log('Error detected', socket.id);
     console.log(err);
   })
 })
@@ -33,7 +27,8 @@ socketIO.on('connection', function (client) {
 var port = process.env.PORT || 8080;
 
 httpServer.listen(port, function (err) {
+
   if (err) console.log(err);
-  console.log('Listening on port', port);
-});
-// app.listen(port, () => { console.log(`Server is running on port ${port}`)});
+    console.log('Listening on port', port);
+
+  });
