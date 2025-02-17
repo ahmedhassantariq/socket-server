@@ -1,11 +1,11 @@
 const httpServer = require('http').createServer()
 const io = require('socket.io')(httpServer,{
-  maxHttpBufferSize: 1e15
+  maxHttpBufferSize: 1e15 //Determines buffer size per message.
 })
 
 // console.log(socketIO.engine.clientCount());
 
-var users = {};
+var users = {}; //Maintains a list of usersers connected. Finds, adds, removes users to manage messaging.
 
 
 
